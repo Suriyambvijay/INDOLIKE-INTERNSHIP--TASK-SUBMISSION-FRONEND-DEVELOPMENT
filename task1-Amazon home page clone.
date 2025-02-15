@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title of the webpage -->
+    <title>Amazon Clone</title>
+    
+    <!-- Internal CSS for styling the webpage -->
+    <style>
+        /* Basic body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #232f3e;
+            color: white;
+            padding: 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo styling */
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Navigation menu styling */
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Main content area styling */
+        main {
+            padding: 20px;
+        }
+
+        /* Product container grid layout */
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* Individual product card styling */
+        .product {
+            background-color: rgb(210, 198, 210);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer; /* Make the card clickable */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Hover effect for product cards */
+        .product:hover {
+            transform: scale(1.05); /* Add a hover effect */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Product image styling */
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        /* Product name styling */
+        .product h2 {
+            margin: 10px 0;
+        }
+
+        /* Product description and price styling */
+        .product p {
+            margin: 5px 0;
+        }
+
+        /* Add to cart button styling */
+        .product button {
+            background-color: #0763e4;
+            color: rgb(111, 91, 91);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Hover effect for the add to cart button */
+        .product button:hover {
+            background-color: #e68a00;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #4479ba;
+            color: rgb(34, 25, 25);
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section with logo and navigation -->
+    <header>
+        <div> Amazon Clone <img src="amazon.jpg" alt="Company Logo" width="50"></div>
+        
+        <!-- Navigation menu -->
+        <nav>
+            <ul>
+                <input type="search" placeholder="search.....">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content area -->
+    <main>
+        <!-- Container for dynamically generated products -->
+        <div class="product-container" id="product-container">
+            <!-- Products will be inserted here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer section -->
+    <footer>
+        <p>&copy; 2025 Amazon Clone <img src="amazon.jpg" alt="Company Logo" width="50"></p>
+    </footer>
+
+    <!-- JavaScript for dynamic product rendering and interactivity -->
+    <script>
+        // Sample product data
+        const products = [
+            { name: "MOHANDAS K. GANDHI AUTOBIOGRAPHY", description: "Description for Product 1", price: 19.99, image: "product1.jpg" },
+            { name: "INDIAN COOKING", description: "Description for Product 2", price: 29.99, image: "product2.jpg" },
+            { name: "HOW TO COOK FOR BEGINNERS", description: "Description for Product 3", price: 39.99, image: "product3.jpg" },
+            { name: "GENERAL KNOWLEDGE", description: "Description for Product 4", price: 49.99, image: "product4.jpg" },
+            { name: "COMIC BOOK ENCYCLOPEDIA", description: "Description for Product 5", price: 59.99, image: "product5.jpg" },
+            { name: "COOKING WILD", description: "Description for Product 6", price: 69.99, image: "product6.jpg" },
+            { name: "COMIC", description: "Description for Product 7", price: 79.99, image: "product7.jpg" },
+            { name: "SCIENCE FICTION", description: "Description for Product 8", price: 79.99, image: "product8.jpg" },
+            { name: "THE WILD DOG", description: "Description for Product 9", price: 79.99, image: "product9.jpg" },
+            { name: "GENERAL KNOWLEDGE FOR COMPETITIVE", description: "Description for Product 10", price: 89.99, image: "product10.jpg" },
+            { name: "THE HISTORY OF THE ANCIENT WORLD", description: "Description for Product 11", price: 99.99, image: "product11.jpg" },
+            { name: "THIS DAY IN HISTORY", description: "Description for Product 12", price: 109.99, image: "product12.jpg" },
+            { name: "DATA STRUCTURE & ALGORITHMS", description: "Description for Product 13", price: 19.99, image: "product13.jpg" },
+            { name: "DIGITAL SYSTEM DESIGN", description: "Description for Product 14", price: 29.99, image: "product14.jpg" },
+            { name: "GANDHI AUTOBIOGRAPHY", description: "Description for Product 15", price: 39.99, image: "product15.jpg" }
+        ];
+
+        // Function to create a product card
+        function createProductCard(product) {
+            const productDiv = document.createElement("div");
+            productDiv.className = "product";
+
+            const productImage = document.createElement("img");
+            productImage.src = product.image;
+            productImage.alt = product.name;
+
+            const productName = document.createElement("h2");
+            productName.textContent = product.name;
+
+            const productDescription = document.createElement("p");
+            productDescription.textContent = product.description;
+
+            const productPrice = document.createElement("p");
+            productPrice.textContent = `$${product.price.toFixed(2)}`;
+
+            const addToCartButton = document.createElement("button");
+            addToCartButton.textContent = "Add to Cart";
+            addToCartButton.onclick = (e) => {
+                e.stopPropagation(); // Prevent the card click event from firing
+                addToCart(product);
+            };
+
+            productDiv.appendChild(productImage);
+            productDiv.appendChild(productName);
+            productDiv.appendChild(productDescription);
+            productDiv.appendChild(productPrice);
+            productDiv.appendChild(addToCartButton);
+
+            // Make the entire card clickable
+            productDiv.onclick = () => displayProductDetails(product);
+
+            return productDiv;
+        }
+
+        // Function to add a product to the cart
+        function addToCart(product) {
+            alert(`Added ${product.name} to cart!`);
+            // You can add more logic here, like updating the cart count or storing the product in a cart array.
+        }
+
+        // Function to display product details
+        function displayProductDetails(product) {
+            alert(`Product: ${product.name}\nDescription: ${product.description}\nPrice: $${product.price.toFixed(2)}`);
+            // You can replace this with a modal or a separate page to display more details.
+        }
+
+        // Function to render products
+        function renderProducts() {
+            const productContainer = document.getElementById("product-container");
+            products.forEach(product => {
+                const productCard = createProductCard(product);
+                productContainer.appendChild(productCard);
+            });
+        }
+
+        // Render products when the page loads
+        window.onload = renderProducts;
+    </script>
+</body>
+</html>
