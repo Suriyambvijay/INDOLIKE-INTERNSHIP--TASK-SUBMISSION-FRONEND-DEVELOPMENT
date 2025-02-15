@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Portal</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    /* Header */
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    /* Main Content */
+    main {
+      padding: 20px;
+    }
+
+    /* Filter Section */
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .filters select, .filters input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .filters button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .filters button:hover {
+      background-color: #218838;
+    }
+
+    /* Job Listings */
+    .job-listings {
+      display: grid;
+      gap: 20px;
+    }
+
+    .job-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-card h3 {
+      margin: 0 0 10px;
+      color: #333;
+    }
+
+    .job-card p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .job-card button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .job-card button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Job Portal</h1>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Filters -->
+    <div class="filters">
+      <select id="category-filter">
+        <option value="all">All Categories</option>
+        <option value="software">Software Development</option>
+        <option value="design">Design</option>
+        <option value="marketing">Marketing</option>
+      </select>
+      <input type="text" id="search-input" placeholder="Search jobs...">
+      <button id="apply-filters">Apply Filters</button>
+    </div>
+
+    <!-- Job Listings -->
+    <div class="job-listings" id="job-listings">
+      <!-- Job cards will be dynamically added here -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2023 Job Portal. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Sample Job Data (30 Jobs)
+    const jobs = [
+      {
+        id: 1,
+        title: "Frontend Developer",
+        company: "Tech Corp",
+        location: "Remote",
+        category: "software",
+        description: "We are looking for a skilled Frontend Developer to join our team."
+      },
+      {
+        id: 2,
+        title: "UI/UX Designer",
+        company: "Design Studio",
+        location: "New York",
+        category: "design",
+        description: "We need a creative UI/UX Designer to design amazing user experiences."
+      },
+      {
+        id: 3,
+        title: "Digital Marketing Specialist",
+        company: "Marketing Agency",
+        location: "San Francisco",
+        category: "marketing",
+        description: "Join our team as a Digital Marketing Specialist and help us grow our brand."
+      },
+      {
+        id: 4,
+        title: "Backend Developer",
+        company: "Tech Solutions",
+        location: "Berlin",
+        category: "software",
+        description: "We are hiring a Backend Developer to work on our cutting-edge projects."
+      },
+      {
+        id: 5,
+        title: "Full Stack Developer",
+        company: "Innovate Inc",
+        location: "London",
+        category: "software",
+        description: "Join our team as a Full Stack Developer and work on exciting projects."
+      },
+      {
+        id: 6,
+        title: "Graphic Designer",
+        company: "Creative Minds",
+        location: "Los Angeles",
+        category: "design",
+        description: "We are looking for a talented Graphic Designer to join our creative team."
+      },
+      {
+        id: 7,
+        title: "SEO Specialist",
+        company: "Digital Boost",
+        location: "Chicago",
+        category: "marketing",
+        description: "We need an SEO Specialist to optimize our online presence."
+      },
+      {
+        id: 8,
+        title: "Mobile App Developer",
+        company: "App Innovators",
+        location: "Toronto",
+        category: "software",
+        description: "We are hiring a Mobile App Developer to build innovative apps."
+      },
+      {
+        id: 9,
+        title: "Web Designer",
+        company: "Web Creators",
+        location: "Sydney",
+        category: "design",
+        description: "Join our team as a Web Designer and create stunning websites."
+      },
+      {
+        id: 10,
+        title: "Social Media Manager",
+        company: "Social Buzz",
+        location: "Paris",
+        category: "marketing",
+        description: "We are looking for a Social Media Manager to grow our online community."
+      },
+      {
+        id: 11,
+        title: "DevOps Engineer",
+        company: "Cloud Tech",
+        location: "Seattle",
+        category: "software",
+        description: "We need a DevOps Engineer to streamline our development processes."
+      },
+      {
+        id: 12,
+        title: "Product Designer",
+        company: "Design Hub",
+        location: "Berlin",
+        category: "design",
+        description: "Join our team as a Product Designer and shape the future of our products."
+      },
+      {
+        id: 13,
+        title: "Content Marketing Specialist",
+        company: "Content Creators",
+        location: "Austin",
+        category: "marketing",
+        description: "We are hiring a Content Marketing Specialist to create engaging content."
+      },
+      {
+        id: 14,
+        title: "Data Scientist",
+        company: "Data Insights",
+        location: "Boston",
+        category: "software",
+        description: "We are looking for a Data Scientist to analyze and interpret complex data."
+      },
+      {
+        id: 15,
+        title: "Motion Graphics Designer",
+        company: "Motion Studio",
+        location: "Miami",
+        category: "design",
+        description: "Join our team as a Motion Graphics Designer and create stunning visuals."
+      },
+      {
+        id: 16,
+        title: "Email Marketing Specialist",
+        company: "Email Experts",
+        location: "Dallas",
+        category: "marketing",
+        description: "We need an Email Marketing Specialist to manage our email campaigns."
+      },
+      {
+        id: 17,
+        title: "Cloud Engineer",
+        company: "Cloud Solutions",
+        location: "San Jose",
+        category: "software",
+        description: "We are hiring a Cloud Engineer to manage our cloud infrastructure."
+      },
+      {
+        id: 18,
+        title: "Illustrator",
+        company: "Art Studio",
+        location: "Vancouver",
+        category: "design",
+        description: "Join our team as an Illustrator and bring ideas to life through art."
+      },
+      {
+        id: 19,
+        title: "PPC Specialist",
+        company: "Advertise Pro",
+        location: "Denver",
+        category: "marketing",
+        description: "We are looking for a PPC Specialist to manage our pay-per-click campaigns."
+      },
+      {
+        id: 20,
+        title: "AI Engineer",
+        company: "AI Innovations",
+        location: "Singapore",
+        category: "software",
+        description: "We need an AI Engineer to develop cutting-edge AI solutions."
+      },
+      {
+        id: 21,
+        title: "Brand Designer",
+        company: "Brand Studio",
+        location: "Tokyo",
+        category: "design",
+        description: "Join our team as a Brand Designer and create impactful brand identities."
+      },
+      {
+        id: 22,
+        title: "Influencer Marketing Manager",
+        company: "Influence Hub",
+        location: "Dubai",
+        category: "marketing",
+        description: "We are hiring an Influencer Marketing Manager to manage influencer partnerships."
+      },
+      {
+        id: 23,
+        title: "Cybersecurity Analyst",
+        company: "Secure Tech",
+        location: "Washington, D.C.",
+        category: "software",
+        description: "We need a Cybersecurity Analyst to protect our systems and data."
+      },
+      {
+        id: 24,
+        title: "3D Animator",
+        company: "Animation Studio",
+        location: "Los Angeles",
+        category: "design",
+        description: "Join our team as a 3D Animator and create stunning animations."
+      },
+      {
+        id: 25,
+        title: "Affiliate Marketing Specialist",
+        company: "Affiliate Pro",
+        location: "London",
+        category: "marketing",
+        description: "We are looking for an Affiliate Marketing Specialist to grow our affiliate network."
+      },
+      {
+        id: 26,
+        title: "Game Developer",
+        company: "Game Studio",
+        location: "Montreal",
+        category: "software",
+        description: "We are hiring a Game Developer to create immersive gaming experiences."
+      },
+      {
+        id: 27,
+        title: "UX Researcher",
+        company: "UX Labs",
+        location: "San Francisco",
+        category: "design",
+        description: "Join our team as a UX Researcher and help us understand user needs."
+      },
+      {
+        id: 28,
+        title: "Event Marketing Manager",
+        company: "Event Pro",
+        location: "New York",
+        category: "marketing",
+        description: "We need an Event Marketing Manager to promote and manage our events."
+      },
+      {
+        id: 29,
+        title: "Blockchain Developer",
+        company: "Blockchain Solutions",
+        location: "Zurich",
+        category: "software",
+        description: "We are looking for a Blockchain Developer to build decentralized applications."
+      },
+      {
+        id: 30,
+        title: "Packaging Designer",
+        company: "Design Studio",
+        location: "Paris",
+        category: "design",
+        description: "Join our team as a Packaging Designer and create innovative packaging solutions."
+      }
+    ];
+
+    // DOM Elements
+    const jobListings = document.getElementById('job-listings');
+    const categoryFilter = document.getElementById('category-filter');
+    const searchInput = document.getElementById('search-input');
+    const applyFiltersBtn = document.getElementById('apply-filters');
+
+    // Render Job Listings
+    function renderJobs(filteredJobs) {
+      jobListings.innerHTML = '';
+      filteredJobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.className = 'job-card';
+        jobCard.innerHTML = `
+          <h3>${job.title}</h3>
+          <p><strong>Company:</strong> ${job.company}</p>
+          <p><strong>Location:</strong> ${job.location}</p>
+          <p><strong>Category:</strong> ${job.category}</p>
+          <p>${job.description}</p>
+          <button onclick="applyForJob(${job.id})">Apply Now</button>
+        `;
+        jobListings.appendChild(jobCard);
+      });
+    }
+
+    // Apply Filters
+    function applyFilters() {
+      const category = categoryFilter.value;
+      const searchTerm = searchInput.value.toLowerCase();
+
+      const filteredJobs = jobs.filter(job => {
+        const matchesCategory = category === 'all' || job.category === category;
+        const matchesSearch = job.title.toLowerCase().includes(searchTerm) ||
+                              job.company.toLowerCase().includes(searchTerm) ||
+                              job.location.toLowerCase().includes(searchTerm);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderJobs(filteredJobs);
+    }
+
+    // Apply for Job (Simulated)
+    function applyForJob(jobId) {
+      alert(`You applied for job ID: ${jobId}`);
+    }
+
+    // Initial Render
+    renderJobs(jobs);
+
+    // Event Listeners
+    applyFiltersBtn.addEventListener('click', applyFilters);
+  </script>
+</body>
+</html>
