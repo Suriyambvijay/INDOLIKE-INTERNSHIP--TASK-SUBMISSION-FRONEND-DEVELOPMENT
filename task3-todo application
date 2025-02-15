@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do Application</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Background Video */
+    #background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Container for To-Do App */
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Input and Button */
+    .input-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input-container input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .input-container button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .input-container button:hover {
+      background-color: #218838;
+    }
+
+    /* Task List */
+    .task-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .task-item.completed {
+      background-color: #d4edda;
+      text-decoration: line-through;
+    }
+
+    .task-item .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .task-item button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .task-item button.complete {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .task-item button.complete:hover {
+      background-color: #0056b3;
+    }
+
+    .task-item button.delete {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .task-item button.delete:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Video -->
+  <video id="background-video" autoplay muted loop>
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- To-Do Application -->
+  <div class="container">
+    <h1>To-Do Application</h1>
+    <div class="input-container">
+4      <input type="text" id="task-input" placeholder="Add a new task...">
+      <button id="add-task-btn">Add Task</button>
+    </div>
+    <ul class="task-list" id="task-list"></ul>
+  </div>
+
+  <script>
+    // JavaScript for To-Do Application
+    const taskInput = document.getElementById('task-input');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const taskList = document.getElementById('task-list');
+
+    // Add Task
+    addTaskBtn.addEventListener('click', () => {
+      const taskText = taskInput.value.trim();
+      if (taskText !== '') {
+        addTask(taskText);
+        taskInput.value = '';
+      }
+    });
+
+    // Add Task to List
+    function addTask(taskText) {
+      const taskItem = document.createElement('li');
+      taskItem.className = 'task-item';
+      taskItem.innerHTML = `
+        <span>${taskText}</span>
+        <div class="actions">
+          <button class="complete">Complete</button>
+          <button class="delete">Delete</button>
+        </div>
+      `;
+      taskList.appendChild(taskItem);
+
+      // Complete Task
+      const completeBtn = taskItem.querySelector('.complete');
+      completeBtn.addEventListener('click', () => {
+        taskItem.classList.toggle('completed');
+      });
+
+      // Delete Task
+      const deleteBtn = taskItem.querySelector('.delete');
+      deleteBtn.addEventListener('click', () => {
+        taskList.removeChild(taskItem);
+      });
+    }
+  </script>
+</body>
+</html>
